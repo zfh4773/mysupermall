@@ -1,6 +1,13 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+    <tab-control
+      :titles="['流行', '新款', '精选']"
+      @tabClick="tabClick"
+      ref="tabControl1"
+      v-show="isTabFixed"
+      class="tabClone"
+    />
     <!-- 滚动组件 scroll -->
     <scroll
       class="content"
@@ -16,7 +23,7 @@
       <tab-control
         :titles="['流行', '新款', '精选']"
         @tabClick="tabClick"
-        ref="tabControl"
+        ref="tabControl2"
       />
       <goods-list :goods="show" />
     </scroll>
@@ -81,16 +88,22 @@ export default {
           break;
         case 2:
           this.currentType = "sell";
+          break;
       }
+      this.$refs.tabControl1.currentIndex = index;
+      this.$refs.tabControl2.currentIndex = index;
     },
     backClick() {
       //调用scroll组件的滚动方法
       this.$refs.Scroll.scrollTo(0, 0);
     },
     contentScroll(position) {
+      // 判断返回顶部按钮是否显示
       position.y < -2000
         ? (this.backTopisshow = true)
         : (this.backTopisshow = false);
+      //决定tabcontrol是否吸顶（position: fixed)
+      this.isTabFixed = -position.y > this.tabOffsetTop;
     },
     //上拉加载更多
     loadMore() {
@@ -118,7 +131,7 @@ export default {
     },
     swiperImageLoad() {
       //获取tabControl 的offsettop
-      this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop;
+      this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
     },
   },
   computed: {
@@ -137,24 +150,44 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "pop",
+      // tabControl到达位置定位距离
       tabOffsetTop: 0,
+      // 回到顶部箭头是否显示
       backTopisshow: false,
+      //tabControl是否定位
+      isTabFixed: false,
     };
   },
 };
 </script>
 
 <style scoped>
+#home {
+  position: relative;
+  height: 100vh;
+}
 .home-nav {
   background-color: var(--color-tint);
   color: #fff;
-  position: sticky;
+  /* position: fixed;
   top: 0;
   left: 0;
-  z-index: 9;
+  right: 0;
+  z-index: 9; */
 }
 .content {
+  position: absolute;
+  top: 44px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
   height: calc(100vh);
   overflow: hidden;
+}
+.tabClone {
+  position: relative;
+  left: 0;
+  top: 0;
+  z-index: 9;
 }
 </style>
