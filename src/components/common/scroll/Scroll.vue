@@ -22,6 +22,7 @@ export default {
   data() {
     return {
       scroll: null,
+      startY: 0,
     };
   },
   mounted() {
@@ -30,15 +31,20 @@ export default {
       click: true,
       probeType: this.probeType,
       pullUpLoad: this.pullUpLoad,
+      startY: this.startY,
     });
     //2监听滚动的位置
     this.scroll.on("scroll", (position) => {
       this.$emit("scroll", position);
+      this.startY = this.scroll.startY;
     });
     //3.监听上拉事件
     this.scroll.on("pullingUp", () => {
       //上拉加载更多
       this.$emit("pullingUp");
+    });
+    this.$bus.$on("routerback", () => {
+      this.scroll.refresh();
     });
   },
   methods: {

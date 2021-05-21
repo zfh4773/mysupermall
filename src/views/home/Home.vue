@@ -25,6 +25,7 @@
         @tabClick="tabClick"
         ref="tabControl2"
       />
+      <!-- 给组件GoodsList组件props传输 -->
       <goods-list :goods="show" />
     </scroll>
     <back-top
@@ -132,6 +133,7 @@ export default {
     swiperImageLoad() {
       //获取tabControl 的offsettop
       this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
+      this.$refs.Scroll.refresh();
     },
   },
   computed: {
@@ -140,6 +142,17 @@ export default {
       return this.goods[this.currentType].list;
     },
   },
+  //-----离开home页面再回去让内容保持不动的功能start----//
+  //进入home页面时
+  activated() {
+    this.$refs.Scroll.refresh();
+    this.$refs.Scroll.scrollTo(0, this.svaeY);
+  },
+  //离开home页面时
+  deactivated() {
+    this.svaeY = this.$refs.Scroll.scroll.y;
+  },
+  //-----离开home页面再回去让内容保持不动的功能end----//
   data() {
     return {
       banners: [],
@@ -156,6 +169,8 @@ export default {
       backTopisshow: false,
       //tabControl是否定位
       isTabFixed: false,
+      // 离开home页面时保存的值
+      svaeY: 0,
     };
   },
 };

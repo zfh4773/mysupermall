@@ -83,6 +83,13 @@
       "unicode_decimal": 58972
     },
     {
+      "icon_id": "14145118",
+      "name": "箭头",
+      "font_class": "jiantou",
+      "unicode": "e741",
+      "unicode_decimal": 59201
+    },
+    {
       "icon_id": "14276772",
       "name": "购物车",
       "font_class": "gouwuche",
