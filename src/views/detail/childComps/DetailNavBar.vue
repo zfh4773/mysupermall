@@ -30,11 +30,10 @@ export default {
   methods: {
     itemClick(index) {
       this.currentindex = index;
-      console.log(this.currentindex);
+      this.$emit("titleClick", index);
     },
     backClick() {
       this.$router.back();
-      this.$bus.$emit("routerback");
     },
   },
 };

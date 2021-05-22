@@ -43,9 +43,6 @@ export default {
       //上拉加载更多
       this.$emit("pullingUp");
     });
-    this.$bus.$on("routerback", () => {
-      this.scroll.refresh();
-    });
   },
   methods: {
     scrollTo(x, y, time = 500) {
